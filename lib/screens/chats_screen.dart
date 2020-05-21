@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../widgets/chats/message.dart';
+
 class ChatsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -31,29 +33,19 @@ class ChatsScreen extends StatelessWidget {
               ),
             ],
             onChanged: (identifier) {
-              if(identifier == 'logout') {
+              if (identifier == 'logout') {
                 FirebaseAuth.instance.signOut();
               }
             },
           )
         ],
       ),
-      body: StreamBuilder(
-        stream: Firestore.instance
-            .collection('chats/NODlH95WgbWZccmAsYr9/message')
-            .snapshots(),
-        builder: (ctx, streamSnapShot) {
-          if (streamSnapShot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          }
-          final documents = streamSnapShot.data.documents;
-          return ListView.builder(
-              itemCount: documents.length,
-              itemBuilder: (ctx, index) => Container(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text(documents[index]['test']),
-                  ));
-        },
+      body: Container(
+        child: Column(
+          children: <Widget>[
+            Expanded(child: Message()),
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
