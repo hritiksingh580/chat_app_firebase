@@ -14,13 +14,19 @@ class _NewMessageState extends State<NewMessage> {
   void _saveMessage() async {
     FocusScope.of(context).unfocus();
     final user = await FirebaseAuth.instance.currentUser();
-    Firestore.instance.collection('chat').add({
-      'text': _newMessage,
-      'CreatedAt': Timestamp.now(),
-      'userId': user.uid,
-    });
+    final userData =
+        await Firestore.instance.collection('users').document(user.uid).get();
+    Firestore.instance.collection('chat').add(
+      {
+        'text': _newMessage,
+        'CreatedAt': Timestamp.now(),
+        'userId': user.uid,
+        'username': userData['username']
+      },
+    );
     _controller.clear();
   }
+
   @override
   Widget build(BuildContext context) {
     return Container(

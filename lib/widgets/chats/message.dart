@@ -33,6 +33,7 @@ class _MessageState extends State<Message> {
               itemCount: chatData.length,
               itemBuilder: (ctx, index) => MessageBubble(
                 chatData[index]['text'],
+                chatData[index]['username'],
                 chatData[index]['userId'] == futureSnapshot.data.uid,
                 key: ValueKey(chatData[index].documentID),
               ),
